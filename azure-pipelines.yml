@@ -20,15 +20,15 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'Docker Hub SC'
-        command: 'login'
-      displayName: 'Docker login'
-    - task: Docker@2
-      inputs:
+      - task: Docker@2
+        inputs:
           containerRegistry: 'Docker Hub SC'
-          repository: 'amryoussef93 / asp-net-devops-demo'
-          command: 'buildAndPush'
-          Dockerfile: '**/Dockerfile'
-      displayName: 'Docker build and push to docker hub'
+          command: 'login'
+        displayName: 'Docker login'
+      - task: Docker@2
+        inputs:
+            containerRegistry: 'Docker Hub SC'
+            repository: 'amryoussef93 / asp-net-devops-demo'
+            command: 'buildAndPush'
+            Dockerfile: '**/Dockerfile'
+        displayName: 'Docker build and push to docker hub'
