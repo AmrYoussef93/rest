@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-app-deployment-pod
+  template:
+    metadata:
+      labels:
+        app: hello-app-deployment-pod
+    spec:
+      containers:
+      - name: hello-app-deployment-pod
+        image: amryoussef93/asp-net-devops-demo:latest
+        ports:
+        - containerPort: 80
