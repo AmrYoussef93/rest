@@ -39,15 +39,45 @@ stages:
   jobs:
   - job: Deploy
     steps:
-       - task: KubernetesManifest@0
-         displayName: Deploy
+       - task: DownloadBuildArtifacts@0
          inputs:
-           action: 'deploy'
-           kubernetesServiceConnection: 'restk8sSC'
-           namespace: 'default'
-           manifests: | 
-             $(pipelinePath)/deployment.yml
-             $(pipelinePath)/service.yml'
-           containers: ''
-           imagePullSecrets: ''
+           artifactName: 'manifests'
+           downloadPath: '$(System.ArtifactsDirectory)/manifests'
+       - task: KubernetesManifest@0
+         inputs:
+          action: 'createSecret'
+          kubernetesServiceConnection: 'restk8sSC'
+          secretType: 'dockerRegistry'
+          secretName: 'dckrHub'
+          dockerRegistryEndpoint: 'Docker Hub SC'
+
+       - task: KubernetesManifest@0
+         inputs:
+            action: 'deploy'
+            kubernetesServiceConnection: 'restk8sSC'
+            manifests: |
+              $(System.ArtifactsDirectory)/manifests/deployment.yml
+               $(System.ArtifactsDirectory)/manifests/service.yml
+            imagePullSecrets: 'dckrHub'
+
+
+      #  - task: KubernetesManifest@0
+      #    displayName: Deploy
+      #    inputs:
+      #      action: 'deploy'
+      #      kubernetesServiceConnection: 'restk8sSC'
+      #      namespace: 'default'
+      #      manifests: | 
+      #        $(pipelinePath)/deployment.yml
+      #        $(pipelinePath)/service.yml'
+      #      containers: ''
+      #      imagePullSecrets: ''
+      #  - task: KubernetesManifest@0
+      #    inputs:
+      #     action: 'createSecret'
+      #     kubernetesServiceConnection: 'restk8sSC'
+      #     secretType: 'dockerRegistry'
+      #     secretName: 'dockerhb'
+      #     dockerRegistryEndpoint: 'Docker Hub SC'
+      
   
