@@ -47,7 +47,7 @@ stages:
            namespace: 'default'
            manifests: | 
              pipelines/deployment.yml
-             manifests/service.yml'
+             pipelines/service.yml'
            containers: ''
            imagePullSecrets: ''
   
