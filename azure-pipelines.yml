@@ -32,3 +32,22 @@ stages:
             command: 'buildAndPush'
             Dockerfile: '**/Dockerfile'
         displayName: 'Docker build and push to docker hub'
+
+- stage: Deploy
+  dependsOn: Build
+  displayName: Deploy To K8s
+  jobs:
+  - job: Deploy
+    steps:
+       - task: KubernetesManifest@0
+         displayName: Deploy
+         inputs:
+           action: 'deploy'
+           kubernetesServiceConnection: 'restk8sSC'
+           namespace: 'default'
+           manifests: | 
+             pipelines/deployment.yml
+             manifests/service.yml'
+           containers: ''
+           imagePullSecrets: ''
+  
