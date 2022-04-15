@@ -10,7 +10,7 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
-
+  pipelinePath : 'resturnat/pipelines'
 stages:
 - stage: Build
   displayName: Build image
@@ -46,8 +46,8 @@ stages:
            kubernetesServiceConnection: 'restk8sSC'
            namespace: 'default'
            manifests: | 
-             pipelines/deployment.yml
-             pipelines/service.yml'
+             $(pipelinePath)/deployment.yml
+             $(pipelinePath)/service.yml'
            containers: ''
            imagePullSecrets: ''
   
