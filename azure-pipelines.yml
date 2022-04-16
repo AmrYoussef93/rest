@@ -58,14 +58,14 @@ stages:
           artifactName: 'resturnat'
           targetPath: '$(Pipeline.Workspace)'
 
-       - task: KubernetesManifest@0
-         displayName: 'Create Secters'
-         inputs:
-          action: 'createSecret'
-          kubernetesServiceConnection: 'restk8sSC'
-          secretType: 'dockerRegistry'
-          secretName: 'dckrHub'
-          dockerRegistryEndpoint: 'Docker Hub SC'
+      #  - task: KubernetesManifest@0
+      #    displayName: 'Create Secters'
+      #    inputs:
+      #     action: 'createSecret'
+      #     kubernetesServiceConnection: 'restk8sSC'
+      #     secretType: 'dockerRegistry'
+      #     secretName: 'dckrHub'
+      #     dockerRegistryEndpoint: 'Docker Hub SC'
 
        - task: KubernetesManifest@0
          displayName: 'Deploy to k8s'
@@ -73,8 +73,8 @@ stages:
             action: 'deploy'
             kubernetesServiceConnection: 'restk8sSC'
             manifests: |
-              $(System.ArtifactsDirectory)/manifests/deployment.yml
-               $(System.ArtifactsDirectory)/manifests/service.yml
+              $(System.ArtifactsDirectory)/resturnat/pipelines/deployment.yml
+               $(System.ArtifactsDirectory)/resturnat/pipelines/service.yml
             imagePullSecrets: 'dckrHub'
 
 
