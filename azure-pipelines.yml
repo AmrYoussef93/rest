@@ -65,6 +65,13 @@ stages:
       #     secretName: 'dckrHub'
       #     dockerRegistryEndpoint: 'Docker Hub SC'
 
+      - task: KubernetesManifest@0
+        displayName: Bake manifests
+        inputs:
+            action: 'bake'
+            name: bake
+            renderType: 'kustomize'
+            kustomizationPath: '/dev' # Location of the kustomization file
 
       - task: KubernetesManifest@0
         displayName: 'Deploy to k8s'
@@ -72,8 +79,8 @@ stages:
             action: 'deploy'
             kubernetesServiceConnection: 'restk8sSC'
             manifests: |
-              /resturnat/pipelines/deployment.yml
-              /resturnat/pipelines/service.yml
+              $(bake.manifestBundle)/resturnat/pipelines/deployment.yml
+              $(bake.manifestBundle)/resturnat/pipelines/service.yml
             # imagePullSecrets: 'dckrHub'
 
 
