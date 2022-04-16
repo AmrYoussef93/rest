@@ -32,6 +32,11 @@ stages:
             command: 'buildAndPush'
             Dockerfile: '**/Dockerfile'
         displayName: 'Docker build and push to docker hub'
+      - task: PublishPipelineArtifact@1 
+        displayName: 'publish artifacts'
+        inputs:
+         artifactName: 'manifests'
+         path: 'manifests'
 
 - stage: Deploy
   dependsOn: Build
@@ -40,10 +45,12 @@ stages:
   - job: Deploy
     steps:
        - task: DownloadBuildArtifacts@0
+         displayName: 'Download deployment artifacts'
          inputs:
            artifactName: 'manifests'
            downloadPath: '$(System.ArtifactsDirectory)/manifests'
        - task: KubernetesManifest@0
+         displayName: 'Create Secters'
          inputs:
           action: 'createSecret'
           kubernetesServiceConnection: 'restk8sSC'
@@ -52,6 +59,7 @@ stages:
           dockerRegistryEndpoint: 'Docker Hub SC'
 
        - task: KubernetesManifest@0
+         displayName: 'Deploy to k8s'
          inputs:
             action: 'deploy'
             kubernetesServiceConnection: 'restk8sSC'
