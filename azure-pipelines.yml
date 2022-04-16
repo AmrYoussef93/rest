@@ -65,15 +65,16 @@ stages:
       #     secretName: 'dckrHub'
       #     dockerRegistryEndpoint: 'Docker Hub SC'
 
+
       - task: KubernetesManifest@0
         displayName: 'Deploy to k8s'
         inputs:
             action: 'deploy'
             kubernetesServiceConnection: 'restk8sSC'
             manifests: |
-              $(System.ArtifactsDirectory)/resturnat/pipelines/deployment.yml
-              $(System.ArtifactsDirectory)/resturnat/pipelines/service.yml
-            imagePullSecrets: 'dckrHub'
+              /resturnat/pipelines/deployment.yml
+              /resturnat/pipelines/service.yml
+            # imagePullSecrets: 'dckrHub'
 
 
       #  - task: KubernetesManifest@0
