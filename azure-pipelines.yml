@@ -35,8 +35,12 @@ stages:
       - task: PublishPipelineArtifact@1 
         displayName: 'publish artifacts'
         inputs:
-         artifactName: 'manifests'
-         path: 'manifests'
+         targetPath: $(System.DefaultWorkingDirectory)/bin/WebApp
+         artifactName: WebApp
+      - task: DownloadPipelineArtifact@2
+        displayName: 'download artifacts'
+        inputs:
+         artifact: WebApp
 
 - stage: Deploy
   dependsOn: Build
