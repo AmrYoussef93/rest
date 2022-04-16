@@ -42,7 +42,7 @@ stages:
         displayName: 'download artifacts'
         inputs:
           buildType: 'current'
-          artifactName: 'WebApp'
+          artifactName: 'resturnat'
           targetPath: '$(Pipeline.Workspace)'
 
 - stage: Deploy
@@ -51,11 +51,13 @@ stages:
   jobs:
   - job: Deploy
     steps:
-       - task: DownloadBuildArtifacts@0
-         displayName: 'Download deployment artifacts'
+       - task: DownloadPipelineArtifact@2
+         displayName: 'download artifacts'
          inputs:
-           artifactName: 'manifests'
-           downloadPath: '$(System.ArtifactsDirectory)/manifests'
+          buildType: 'current'
+          artifactName: 'resturnat'
+          targetPath: '$(Pipeline.Workspace)'
+
        - task: KubernetesManifest@0
          displayName: 'Create Secters'
          inputs:
