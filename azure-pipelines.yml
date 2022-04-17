@@ -25,13 +25,13 @@ stages:
           containerRegistry: 'Docker Hub SC'
           command: 'login'
         displayName: 'Docker login'
-      - task: Docker@2
-        inputs:
-            containerRegistry: 'Docker Hub SC'
-            repository: 'amryoussef93 / asp-net-devops-demo'
-            command: 'buildAndPush'
-            Dockerfile: '**/Dockerfile'
-        displayName: 'Docker build and push to docker hub'
+      # - task: Docker@2
+      #   inputs:
+      #       containerRegistry: 'Docker Hub SC'
+      #       repository: 'amryoussef93 / asp-net-devops-demo'
+      #       command: 'buildAndPush'
+      #       Dockerfile: '**/Dockerfile'
+      #   displayName: 'Docker build and push to docker hub'
       - task: PublishPipelineArtifact@1 
         displayName: 'publish artifacts'
         inputs:
@@ -51,11 +51,17 @@ stages:
   jobs:
   - job: Deploy
     steps:
-      - task: DownloadPipelineArtifact@2
-        displayName: '$(Build.ArtifactStagingDirectory)/$(System.ArtifactsDirectory)'
-        inputs:
+        - task: DownloadPipelineArtifact@2
+          inputs:
             artifactName: 'resturnat'
-            downloadPath: $(System.ArtifactsDirectory)
+            downloadPath: '$(System.ArtifactsDirectory)'
+
+        - task: DownloadPipelineArtifact@2
+          displayName: 'download artifacts  -- $(Pipeline.Workspace)'
+          inputs:
+           buildType: 'current'
+           artifactName: 'resturnat'
+           targetPath: '$(Pipeline.Workspace)'
 
       #  - task: KubernetesManifest@0
       #    displayName: 'Create Secters'
@@ -66,16 +72,15 @@ stages:
       #     secretName: 'dckrHub'
       #     dockerRegistryEndpoint: 'Docker Hub SC'
 
-
-      - task: KubernetesManifest@0
-        displayName: 'Deploy to k8s'
-        inputs:
+        - task: KubernetesManifest@0
+          displayName: 'Deploy to k8s'
+          inputs:
             action: 'deploy'
             kubernetesServiceConnection: 'restk8sSC'
             manifests: |
-              $(System.ArtifactsDirectory)/resturnat/pipelines/deployment.yml
-              $(System.ArtifactsDirectory)/resturnat/pipelines/service.yml
-            # imagePullSecrets: 'dckrHub'
+               $(Pipeline.Workspace)/resturnat/pipelines/deployment.yml
+               $(Pipeline.Workspace)/resturnat/pipelines/service.yml
+            imagePullSecrets: 'dckrHub'
 
 
       #  - task: KubernetesManifest@0
