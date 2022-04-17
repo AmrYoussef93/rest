@@ -52,9 +52,10 @@ stages:
   - job: Deploy
     steps:
       - task: DownloadPipelineArtifact@2
+        displayName: '$(Build.ArtifactStagingDirectory)/$(System.ArtifactsDirectory)'
         inputs:
             artifactName: 'resturnat'
-            downloadPath: '$(System.ArtifactsDirectory)'
+            downloadPath: $(System.ArtifactsDirectory)
 
       #  - task: KubernetesManifest@0
       #    displayName: 'Create Secters'
@@ -65,13 +66,6 @@ stages:
       #     secretName: 'dckrHub'
       #     dockerRegistryEndpoint: 'Docker Hub SC'
 
-      - task: KubernetesManifest@0
-        displayName: Bake manifests
-        inputs:
-            action: 'bake'
-            name: bake
-            renderType: 'kustomize'
-            kustomizationPath: '/dev' # Location of the kustomization file
 
       - task: KubernetesManifest@0
         displayName: 'Deploy to k8s'
@@ -79,8 +73,8 @@ stages:
             action: 'deploy'
             kubernetesServiceConnection: 'restk8sSC'
             manifests: |
-              $(bake.manifestBundle)/resturnat/pipelines/deployment.yml
-              $(bake.manifestBundle)/resturnat/pipelines/service.yml
+              $(System.ArtifactsDirectory)/resturnat/pipelines/deployment.yml
+              $(System.ArtifactsDirectory)/resturnat/pipelines/service.yml
             # imagePullSecrets: 'dckrHub'
 
 
