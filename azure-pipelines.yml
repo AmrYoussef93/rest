@@ -57,7 +57,7 @@ stages:
             downloadPath: '$(System.ArtifactsDirectory)'
 
         - task: DownloadPipelineArtifact@2
-          displayName: 'download artifacts  -- $(Pipeline.Workspace)'
+          displayName: 'download artifacts  -- $(System.ArtifactsDirectory) --- '
           inputs:
            buildType: 'current'
            artifactName: 'resturnat'
