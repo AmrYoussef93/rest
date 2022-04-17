@@ -54,7 +54,7 @@ stages:
         - task: DownloadPipelineArtifact@2
           inputs:
             artifactName: 'app'
-            downloadPath: '$(System.DefaultWorkingDirectory)'
+            downloadPath: '$(System.DefaultWorkingDirectory)/pipelines'
 
         # - task: DownloadPipelineArtifact@2
         #   displayName: 'download artifacts  -- $(System.ArtifactsDirectory) --- '
@@ -78,8 +78,8 @@ stages:
             action: 'deploy'
             kubernetesServiceConnection: 'restk8sSC'
             manifests: |
-               $(System.DefaultWorkingDirectory)/resturnat/pipelines/deployment.yml
-               $(System.DefaultWorkingDirectory)/resturnat/pipelines/service.yml
+               $(System.DefaultWorkingDirectory)/pipelines/deployment.yml
+               $(System.DefaultWorkingDirectory)/pipelines/service.yml
             imagePullSecrets: 'dckrHub'
 
 
