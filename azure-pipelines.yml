@@ -51,6 +51,13 @@ stages:
   jobs:
   - job: Deploy
     steps:
+        - task: PublishPipelineArtifact@1 
+          displayName: 'publish artifacts'
+          inputs:
+            targetPath: '$(System.DefaultWorkingDirectory)'
+            artifact: 'app'
+            publishLocation: 'pipeline'
+
         - task: DownloadPipelineArtifact@2
           inputs:
             artifactName: 'app'
