@@ -36,14 +36,14 @@ stages:
         displayName: 'publish artifacts'
         inputs:
           targetPath: '$(System.DefaultWorkingDirectory)'
-          artifact: 'resturnat'
+          artifact: 'app'
           publishLocation: 'pipeline'
       - task: DownloadPipelineArtifact@2
         displayName: 'download artifacts'
         inputs:
           buildType: 'current'
-          artifactName: 'resturnat'
-          targetPath: '$(Pipeline.Workspace)'
+          artifactName: 'app'
+          targetPath: '$(System.DefaultWorkingDirectory)'
 
 - stage: Deploy
   dependsOn: Build
@@ -53,15 +53,15 @@ stages:
     steps:
         - task: DownloadPipelineArtifact@2
           inputs:
-            artifactName: 'resturnat'
-            downloadPath: '$(System.ArtifactsDirectory)'
+            artifactName: 'app'
+            downloadPath: '$(System.DefaultWorkingDirectory)'
 
-        - task: DownloadPipelineArtifact@2
-          displayName: 'download artifacts  -- $(System.ArtifactsDirectory) --- '
-          inputs:
-           buildType: 'current'
-           artifactName: 'resturnat'
-           targetPath: '$(Pipeline.Workspace)'
+        # - task: DownloadPipelineArtifact@2
+        #   displayName: 'download artifacts  -- $(System.ArtifactsDirectory) --- '
+        #   inputs:
+        #    buildType: 'current'
+        #    artifactName: 'resturnat'
+        #    targetPath: '$(Pipeline.Workspace)'
 
       #  - task: KubernetesManifest@0
       #    displayName: 'Create Secters'
@@ -78,8 +78,8 @@ stages:
             action: 'deploy'
             kubernetesServiceConnection: 'restk8sSC'
             manifests: |
-               $(Pipeline.Workspace)/resturnat/pipelines/deployment.yml
-               $(Pipeline.Workspace)/resturnat/pipelines/service.yml
+               $(System.DefaultWorkingDirectory)/resturnat/pipelines/deployment.yml
+               $(System.DefaultWorkingDirectory)/resturnat/pipelines/service.yml
             imagePullSecrets: 'dckrHub'
 
 
