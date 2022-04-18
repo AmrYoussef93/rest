@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: resturantapp 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: resturantapp
+  template:
+    metadata:
+      labels:
+        app: resturantapp 
+    spec:
+      containers:
+        - name: resturantapp 
+          image: resturantdevopscr.azurecr.io/resturantapp
+          ports:
+          - containerPort: 80
