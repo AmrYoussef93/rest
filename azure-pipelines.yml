@@ -53,7 +53,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    # environment: 'AmrYoussef93rest.default'
+      environment: 'AmrYoussef93rest.default'
     strategy:
       runOnce:
         deploy:
