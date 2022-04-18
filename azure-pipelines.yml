@@ -51,6 +51,7 @@ stages:
   jobs:
   - deployment: Deploy
     displayName: Deploy
+    environment: 'AmrYoussef93rest.default'
     pool:
       vmImage: $(vmImageName)
       environment: 'AmrYoussef93rest.default'
