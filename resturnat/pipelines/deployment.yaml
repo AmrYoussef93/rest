@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: hello-app-deployment-pod
-        image: resturantdevopscr.azurecr.io:latest
+        image: resturantdevopscr.azurecr.io/resturantapp
         ports:
         - containerPort: 80
