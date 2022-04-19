@@ -48,7 +48,7 @@ stages:
     displayName: Deploy
     environment: 'DockerHubEnv'
     pool:
-      vmImage: $(vmImageName)
+      vmImage: ubuntu-latest
     strategy:
       runOnce:
         deploy:
