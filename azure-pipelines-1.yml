@@ -45,7 +45,7 @@ stages:
   jobs:
   - deployment: Deploy
     displayName: Deploy
-    environment: 'AmrYoussef93rest.default'
+    environment: 'DockerHubEnv'
     pool:
       vmImage: $(vmImageName)
     strategy:
