@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: resturantapp 
-          image: resturantdevopscr.azurecr.io/resturantapp
+          image: amryoussef93/asp-net-devops-demo
           ports:
           - containerPort: 80
